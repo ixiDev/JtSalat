@@ -1,0 +1,7 @@
+<resources>
+    <string name="fajr_salat_name">Fajr</string>
+    <string name="dhuhr_salat_name">Dhuhr</string>
+    <string name="asr_salat_name">Asr</string>
+    <string name="maghrib_salat_name">Maghrib</string>
+    <string name="isha_salat_name">Isha</string>
+</resources>

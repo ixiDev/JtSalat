@@ -1,4 +1,7 @@
+import android.graphics.PointF
 import android.os.Build
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 class AndroidPlatform : Platform {
     override val name: String = "Android ${Build.VERSION.SDK_INT}"

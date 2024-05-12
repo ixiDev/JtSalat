@@ -15,7 +15,7 @@ kotlin {
         }
     }
     
-//    jvm("desktop")
+    jvm("desktop")
     
     listOf(
         iosX64(),
@@ -29,11 +29,12 @@ kotlin {
     }
     
     sourceSets {
-//        val desktopMain by getting
+        val desktopMain by getting
         
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.koin.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -44,10 +45,18 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(kotlin("stdlib"))
             implementation(libs.kotlinx.datetime)
+//            implementation(compose.materialIconsExtended)
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+//            implementation("androidx.lifecycle:lifecycle-viewmodel:2.8.0-rc01")
+            implementation("org.jetbrains.androidx.navigation:navigation-compose:2.7.0-alpha03")
+            implementation ("io.github.wojciechosak:calendar:0.0.8")
+
+
         }
-//        desktopMain.dependencies {
-//            implementation(compose.desktop.currentOs)
-//        }
+        desktopMain.dependencies {
+            implementation(compose.desktop.currentOs)
+        }
     }
 }
 
@@ -74,6 +83,7 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -85,14 +95,14 @@ android {
     }
 }
 
-//compose.desktop {
-//    application {
-//        mainClass = "MainKt"
-//
-//        nativeDistributions {
-//            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-//            packageName = "com.ixidev.jtsalat"
-//            packageVersion = "1.0.0"
-//        }
-//    }
-//}
+compose.desktop {
+    application {
+        mainClass = "MainKt"
+
+        nativeDistributions {
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            packageName = "com.ixidev.jtsalat"
+            packageVersion = "1.0.0"
+        }
+    }
+}

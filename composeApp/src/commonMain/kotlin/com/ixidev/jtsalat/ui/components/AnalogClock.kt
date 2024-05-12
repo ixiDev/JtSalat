@@ -22,6 +22,8 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ixidev.jtsalat.utils.ClockFlow
+import kotlinx.coroutines.flow.Flow
+import kotlinx.datetime.LocalDateTime
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import toRadian
 import kotlin.math.cos
@@ -45,10 +47,11 @@ data class ClockStyle(
 @Composable
 fun AnalogClock(
     modifier: Modifier = Modifier,
-    style: ClockStyle = ClockStyle()
+    style: ClockStyle = ClockStyle(),
+    clockFlow: Flow<LocalDateTime>
 ) {
     val textMeasurer = rememberTextMeasurer()
-    val clock by ClockFlow.now().collectAsState(null)
+    val clock by clockFlow.collectAsState(null)
     val hours = clock?.hour ?: 1
     val minutes = clock?.minute ?: 3
     val seconds = clock?.second ?: 45
@@ -149,8 +152,3 @@ private fun DrawScope.drawHand(
     }
 }
 
-@Preview
-@Composable
-fun PreviewClock() {
-    AnalogClock()
-}
