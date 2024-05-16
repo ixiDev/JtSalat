@@ -6,4 +6,3 @@ interface Platform {
 
 expect fun getPlatform(): Platform
 
-fun toRadian(degree: Double): Double  = degree * PI / 180

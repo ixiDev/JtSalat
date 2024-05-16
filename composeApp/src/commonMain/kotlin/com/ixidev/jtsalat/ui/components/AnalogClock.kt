@@ -22,10 +22,10 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ixidev.jtsalat.utils.ClockFlow
+import com.ixidev.jtsalat.utils.toRadians
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.LocalDateTime
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import toRadian
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -82,7 +82,7 @@ private fun DrawScope.drawClockFace(textMeasurer: TextMeasurer, style: ClockStyl
 
     repeat(12) { i ->
         val hour = i + 1
-        val angle = toRadian((hour * 30 - 30 * 3).toDouble())
+        val angle = (hour * 30 - 30 * 3).toDouble().toRadians()
         val startX = center.x + radius * style.textPadding * cos(angle).toFloat()
         val startY = center.y + radius * style.textPadding * sin(angle).toFloat()
         drawText(

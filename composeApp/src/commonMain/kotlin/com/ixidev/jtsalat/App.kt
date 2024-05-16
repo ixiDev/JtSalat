@@ -86,7 +86,7 @@ fun AppHost(modifier: Modifier, navController: NavHostController) {
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = Destinations.HOME,
+        startDestination = Destinations.COMPASS,
 //        enterTransition = {
 //            slideIntoContainer(towards = AnimatedContentTransitionScope.SlideDirection.Start, animationSpec =  tween(300))
 //        },

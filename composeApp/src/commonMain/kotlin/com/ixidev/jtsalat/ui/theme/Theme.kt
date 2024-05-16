@@ -45,11 +45,9 @@ fun JtSalatTheme(
         else -> LightColorScheme
     }
 
-    KoinComposeApp {
-        MaterialTheme(
-            colors = colorScheme,
-            typography = Typography,
-            content = content
-        )
-    }
+    MaterialTheme(
+        colors = colorScheme,
+        typography = Typography,
+        content = content
+    )
 }

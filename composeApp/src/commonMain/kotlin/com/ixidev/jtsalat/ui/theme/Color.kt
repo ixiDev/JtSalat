@@ -9,3 +9,5 @@ val Pink80 = Color(0xFFEFB8C8)
 val LightPrimaryColor = Color(0xffcfac7c)
 val LightSecondaryColor = Color(0xff222222)
 val LightVariant = Color(0xff222222)
+
+val QiblaTintColor = Color(0xff5fc899)
