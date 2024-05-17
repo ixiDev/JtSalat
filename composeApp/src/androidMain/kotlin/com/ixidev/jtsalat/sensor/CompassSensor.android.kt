@@ -8,9 +8,7 @@ import android.hardware.SensorManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.onSubscription
+import kotlin.math.roundToInt
 
 actual class CompassSensor(context: Context) {
     private val sensorManager: SensorManager =
@@ -30,7 +28,7 @@ actual class CompassSensor(context: Context) {
         override fun onSensorChanged(event: SensorEvent?) {
             event?.let {
                 val orientation = event.values[0]
-                _orientationFlow.value = orientation.toInt()
+                _orientationFlow.value = orientation.roundToInt()
             }
         }
     }

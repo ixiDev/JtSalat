@@ -51,6 +51,7 @@ kotlin {
 //            implementation("androidx.lifecycle:lifecycle-viewmodel:2.8.0-rc01")
             implementation("org.jetbrains.androidx.navigation:navigation-compose:2.7.0-alpha03")
             implementation ("io.github.wojciechosak:calendar:0.0.8")
+            api("dev.icerock.moko:geo-compose:0.6.0")
 
 
         }

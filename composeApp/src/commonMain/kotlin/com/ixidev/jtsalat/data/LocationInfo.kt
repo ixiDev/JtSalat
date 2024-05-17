@@ -2,7 +2,7 @@ package com.ixidev.jtsalat.data
 
 
 data class LocationInfo(
-    val lat: Double,
-    val lng: Double,
+    val latitude: Double,
+    val longitude: Double,
     val city: String,
 )
