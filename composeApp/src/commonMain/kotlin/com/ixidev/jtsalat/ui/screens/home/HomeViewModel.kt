@@ -12,11 +12,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import org.koin.core.logger.Logger
 
 class HomeViewModel(
     appSettings: AppSettings,
-    logger: Logger
 ) : ViewModel() {
 
     val homeStateFlow = appSettings.getUserLocation()
