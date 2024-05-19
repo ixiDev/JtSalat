@@ -8,7 +8,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -26,10 +25,9 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun NextSalatTimeView(modifier: Modifier, salatInfo: SalatInfo, clockFlow: Flow<LocalDateTime>) {
 
-    val salatName = remember { getSalatName(salatInfo.salatype) }
-    val salatTime = remember {
-        salatInfo.time.toLocalDateTime(TimeZone.currentSystemDefault())
-    }
+    val salatName = getSalatName(salatInfo.salatype)
+    val salatTime = salatInfo.time.toLocalDateTime(TimeZone.currentSystemDefault())
+
     val currentTime by clockFlow.collectAsState(null)
 
 

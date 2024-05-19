@@ -23,7 +23,6 @@ class AppViewModel(
     init {
         locationTracker.getLocationsFlow()
             .map {
-                logger.info("Location: $it")
                 geocodeReverser.reverseGeocode(it.latitude, it.longitude)
             }
             .distinctUntilChangedBy { it.city }

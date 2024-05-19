@@ -18,8 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import com.ixidev.jtsalat.data.models.SalatInfo
-import com.ixidev.jtsalat.data.models.SalatType
 import com.ixidev.jtsalat.ui.components.AnalogClock
 import com.ixidev.jtsalat.ui.components.ClockStyle
 import com.ixidev.jtsalat.ui.components.LocationInfoView
@@ -27,7 +25,6 @@ import com.ixidev.jtsalat.ui.components.NextSalatTimeView
 import com.ixidev.jtsalat.utils.ClockFlow
 import jtsalat.composeapp.generated.resources.Res
 import jtsalat.composeapp.generated.resources.home_background
-import kotlinx.datetime.Clock
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
@@ -48,7 +45,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 
     val viewModel = koinInject<HomeViewModel>()
 
-    val locationInfo by viewModel.currentLocation.collectAsState()
+    val homeState by viewModel.homeStateFlow.collectAsState(HomeState.EMPTY)
     val clockFlow = remember { ClockFlow.now() }
 
     Box(modifier) {
@@ -84,20 +81,15 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             ) {
                 LocationInfoView(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
-                    location = locationInfo,
+                    location = homeState.currentLocation,
                     clockFlow = clockFlow
                 )
 
                 Spacer(modifier = Modifier.height(40.dp))
-                val nexSalatInfo = remember {
-                    SalatInfo(
-                        salatype = SalatType.ISHA,
-                        time = Clock.System.now()
-                    )
-                }
+
                 NextSalatTimeView(
                     Modifier.fillMaxWidth(),
-                    nexSalatInfo,
+                    homeState.nextSalat,
                     clockFlow
                 )
             }

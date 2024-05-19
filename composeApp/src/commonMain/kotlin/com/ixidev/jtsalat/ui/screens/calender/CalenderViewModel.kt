@@ -1,9 +1,7 @@
 package com.ixidev.jtsalat.ui.screens.calender
 
 import androidx.lifecycle.ViewModel
-import com.batoulapps.adhan2.CalculationMethod
 import com.batoulapps.adhan2.Coordinates
-import com.batoulapps.adhan2.Madhab
 import com.batoulapps.adhan2.PrayerTimes
 import com.batoulapps.adhan2.data.DateComponents
 import com.ixidev.jtsalat.data.AppSettings
@@ -16,14 +14,10 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
 class CalenderViewModel(
-    appSettings: AppSettings
+    private val appSettings: AppSettings
 ) : ViewModel() {
 
 
-    private val params = CalculationMethod.MUSLIM_WORLD_LEAGUE.parameters
-        .copy(
-            madhab = Madhab.SHAFI,
-        )
 
     val calenderStateFlow = appSettings.getUserLocation()
         .map { locationInfo ->
@@ -37,12 +31,8 @@ class CalenderViewModel(
             dateTime.monthNumber,
             dateTime.dayOfMonth
         )
-        val preyTimes = try {
-            val coordinates = Coordinates(locationInfo.latitude, locationInfo.longitude)
-            PrayerTimes(coordinates, dateComponents, params)
-        } catch (e: Exception) {
-            return emptyList()
-        }
+        val coordinates = Coordinates(locationInfo.latitude, locationInfo.longitude)
+        val preyTimes = PrayerTimes(coordinates, dateComponents, appSettings.calculationParameters)
 
         return listOf(
             SalatInfo(

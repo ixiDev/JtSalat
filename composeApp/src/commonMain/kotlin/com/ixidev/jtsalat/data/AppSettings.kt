@@ -1,5 +1,7 @@
 package com.ixidev.jtsalat.data
 
+import com.batoulapps.adhan2.CalculationMethod
+import com.batoulapps.adhan2.Madhab
 import com.ixidev.jtsalat.data.models.LocationInfo
 import com.russhwolf.settings.Settings
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -9,6 +11,9 @@ import kotlinx.serialization.json.Json
 class AppSettings {
     private val settings = Settings().asObservableSettings()
 
+
+    val calculationParameters = CalculationMethod.MUSLIM_WORLD_LEAGUE.parameters
+        .copy(madhab = Madhab.SHAFI)
 
     fun getUserLocation(): StateFlow<LocationInfo> {
         val json = settings.getString("user_location", "")

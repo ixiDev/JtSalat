@@ -6,5 +6,5 @@ object Destinations {
     const val COMPASS = "compass"
     const val CALENDAR = "calendar"
 
-    const val DEFAULT = CALENDAR
+    const val DEFAULT = HOME
 }
