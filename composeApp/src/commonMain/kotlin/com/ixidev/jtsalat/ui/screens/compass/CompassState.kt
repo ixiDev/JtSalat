@@ -12,4 +12,8 @@ data class CompassState(
         longitude = -7.60,
         city = "Unknown, Unknown"
     )
-)
+) {
+    companion object {
+        val EMPTY = CompassState()
+    }
+}

@@ -12,14 +12,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -28,9 +26,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.ixidev.jtsalat.ui.theme.QiblaTintColor
-import dev.icerock.moko.geo.compose.BindLocationTrackerEffect
-import dev.icerock.moko.geo.compose.LocationTrackerAccuracy
-import dev.icerock.moko.geo.compose.rememberLocationTrackerFactory
 import jtsalat.composeapp.generated.resources.Res
 import jtsalat.composeapp.generated.resources.approx_qibla_direction
 import jtsalat.composeapp.generated.resources.compase_view_no_arrow
@@ -40,21 +35,14 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
-import org.koin.core.parameter.parametersOf
 
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 fun CompassScreen(modifier: Modifier = Modifier) {
 
-    val facotry = rememberLocationTrackerFactory(LocationTrackerAccuracy.Best)
-    val locationTracker = remember { facotry.createLocationTracker() }
-    BindLocationTrackerEffect(locationTracker)
-
-    val viewModel = koinInject<CompassViewModel>(
-        parameters = { parametersOf(locationTracker) }
-    )
-    val compassState by viewModel.compassStateFlow.collectAsState(null)
+    val viewModel = koinInject<CompassViewModel>()
+    val compassState by viewModel.compassStateFlow.collectAsState(CompassState.EMPTY)
 
     Column(
         modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally,
@@ -66,7 +54,7 @@ fun CompassScreen(modifier: Modifier = Modifier) {
             contentDescription = null,
             modifier = Modifier
                 .size(30.dp),
-            tint = if (compassState?.isInQibla == true) QiblaTintColor else MaterialTheme.colors.primary
+            tint = if (compassState.isInQibla) QiblaTintColor else MaterialTheme.colors.primary
         )
         Box(
             modifier = Modifier.fillMaxWidth()
@@ -79,61 +67,50 @@ fun CompassScreen(modifier: Modifier = Modifier) {
                 modifier = Modifier.fillMaxSize()
                     .align(Alignment.Center)
                     .padding(15.dp)
-                    .rotate(-(compassState?.degrees?.toFloat() ?: 0f)),
+                    .rotate(-(compassState.degrees.toFloat())),
                 painter = painterResource(Res.drawable.compase_view_no_arrow),
                 contentDescription = null
             )
+            val qiblaDirection = (compassState.qiblaDegrees - compassState.degrees).toFloat()
             Image(
                 modifier = Modifier.fillMaxSize()
                     .align(Alignment.Center)
-                    .padding(5.dp),
+                    .padding(5.dp)
+                    .rotate(qiblaDirection),
                 painter = painterResource(Res.drawable.compass_qibla_direction),
                 contentDescription = null,
-                colorFilter = if (compassState?.isInQibla == true) ColorFilter.tint(QiblaTintColor) else null
+                colorFilter = if (compassState.isInQibla) ColorFilter.tint(QiblaTintColor) else null
             )
 
-            if (compassState == null) {
-                CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.Center),
-                    strokeWidth = 3.dp
-                )
-            } else {
-                Text(
-                    modifier = Modifier.align(Alignment.Center),
-                    text = "${compassState?.degrees}",
-                    style = MaterialTheme.typography.h2,
-                    color = if (compassState?.isInQibla == true) QiblaTintColor else Color(
-                        0xffc4772b
-                    ),
-                    textAlign = TextAlign.Center
-                )
-            }
+            Text(
+                modifier = Modifier.align(Alignment.Center),
+                text = "${compassState.degrees}",
+                style = MaterialTheme.typography.h2,
+                color = if (compassState.isInQibla) QiblaTintColor else Color(
+                    0xffc4772b
+                ),
+                textAlign = TextAlign.Center
+            )
 
         }
 
         Spacer(modifier = Modifier.size(20.dp))
 
-        compassState?.let { state ->
-            Text(
-                text = stringResource(Res.string.approx_qibla_direction),
-                color = Color.Gray,
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                fontSize = MaterialTheme.typography.h6.fontSize
-            )
+        Text(
+            text = stringResource(Res.string.approx_qibla_direction),
+            color = Color.Gray,
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            fontSize = MaterialTheme.typography.h6.fontSize
+        )
 
-            Spacer(modifier = Modifier.size(5.dp))
+        Spacer(modifier = Modifier.size(5.dp))
 
-            Text(
-                text = " ${state.location.city}  ${state.qiblaDegrees}°",
-                color = Color.Gray,
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                fontSize = MaterialTheme.typography.h6.fontSize
-            )
-        }
+        Text(
+            text = " ${compassState.location.city}  ${compassState.qiblaDegrees}°",
+            color = Color.Gray,
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            fontSize = MaterialTheme.typography.h6.fontSize
+        )
     }
-
-//    LaunchedEffect(Unit) {
-//        viewModel.startLocationTracker()
-//    }
 
 }
