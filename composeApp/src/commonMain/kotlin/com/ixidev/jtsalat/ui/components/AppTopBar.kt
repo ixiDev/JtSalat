@@ -12,7 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.ixidev.jtsalat.data.LocationInfo
+import com.ixidev.jtsalat.data.models.LocationInfo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.LocalDateTime
 import org.jetbrains.compose.resources.ExperimentalResourceApi

@@ -1,9 +1,8 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
+    kotlin("plugin.serialization") version "1.9.23"
 }
 
 kotlin {
@@ -14,8 +13,8 @@ kotlin {
             }
         }
     }
-    
-    jvm("desktop")
+
+    //jvm("desktop")
     
     listOf(
         iosX64(),
@@ -29,7 +28,7 @@ kotlin {
     }
     
     sourceSets {
-        val desktopMain by getting
+        //val desktopMain by getting
         
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
@@ -48,15 +47,16 @@ kotlin {
 //            implementation(compose.materialIconsExtended)
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
-//            implementation("androidx.lifecycle:lifecycle-viewmodel:2.8.0-rc01")
             implementation("org.jetbrains.androidx.navigation:navigation-compose:2.7.0-alpha03")
             implementation ("io.github.wojciechosak:calendar:0.0.8")
             api("dev.icerock.moko:geo-compose:0.6.0")
+            implementation("com.batoulapps.adhan:adhan2:0.0.5")
+            implementation("com.russhwolf:multiplatform-settings-no-arg:1.1.1")
+            implementation("com.russhwolf:multiplatform-settings-serialization:1.1.1")
 
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+            // implementation(kotlin("kotlinx-serialization-json"))
 
-        }
-        desktopMain.dependencies {
-            implementation(compose.desktop.currentOs)
         }
     }
 }
@@ -96,14 +96,4 @@ android {
     }
 }
 
-compose.desktop {
-    application {
-        mainClass = "MainKt"
 
-        nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "com.ixidev.jtsalat"
-            packageVersion = "1.0.0"
-        }
-    }
-}

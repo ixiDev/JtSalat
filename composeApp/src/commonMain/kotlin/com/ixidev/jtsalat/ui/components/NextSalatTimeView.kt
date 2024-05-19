@@ -12,17 +12,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.ixidev.jtsalat.data.SalatInfo
-import com.ixidev.jtsalat.data.SalatType
+import com.ixidev.jtsalat.data.models.SalatInfo
+import com.ixidev.jtsalat.ui.getSalatName
 import com.ixidev.jtsalat.utils.calculateTimeDifference
-import jtsalat.composeapp.generated.resources.Res
-import jtsalat.composeapp.generated.resources.asr_salat_name
-import jtsalat.composeapp.generated.resources.dhuhr_salat_name
-import jtsalat.composeapp.generated.resources.fajr_salat_name
-import jtsalat.composeapp.generated.resources.isha_salat_name
-import jtsalat.composeapp.generated.resources.maghrib_salat_name
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
 
@@ -30,14 +26,9 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun NextSalatTimeView(modifier: Modifier, salatInfo: SalatInfo, clockFlow: Flow<LocalDateTime>) {
 
-    val salatName = remember {
-        when (salatInfo.salatype) {
-            SalatType.FAJR -> Res.string.fajr_salat_name
-            SalatType.DHUHR -> Res.string.dhuhr_salat_name
-            SalatType.ASR -> Res.string.asr_salat_name
-            SalatType.MAGHRIB -> Res.string.maghrib_salat_name
-            SalatType.ISHA -> Res.string.isha_salat_name
-        }
+    val salatName = remember { getSalatName(salatInfo.salatype) }
+    val salatTime = remember {
+        salatInfo.time.toLocalDateTime(TimeZone.currentSystemDefault())
     }
     val currentTime by clockFlow.collectAsState(null)
 
@@ -51,7 +42,7 @@ fun NextSalatTimeView(modifier: Modifier, salatInfo: SalatInfo, clockFlow: Flow<
         )
 
         Text(
-            text = "${salatInfo.time.hour}:${salatInfo.time.minute}",
+            text = "${salatTime.hour}:${salatTime.minute}",
             style = MaterialTheme.typography.h6,
             color = MaterialTheme.colors.primary
         )
@@ -59,7 +50,7 @@ fun NextSalatTimeView(modifier: Modifier, salatInfo: SalatInfo, clockFlow: Flow<
         Spacer(modifier = Modifier.height(10.dp))
         // time remaining
         Text(
-            text = calculateTimeDifference(currentTime?.time ?: salatInfo.time, salatInfo.time),
+            text = calculateTimeDifference(currentTime?.time ?: salatTime.time, salatTime.time),
             style = MaterialTheme.typography.h4,
             color = MaterialTheme.colors.primary
         )

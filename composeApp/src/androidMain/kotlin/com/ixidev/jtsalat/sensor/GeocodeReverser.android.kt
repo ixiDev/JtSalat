@@ -2,7 +2,7 @@ package com.ixidev.jtsalat.sensor
 
 import android.content.Context
 import android.location.Geocoder
-import com.ixidev.jtsalat.data.LocationInfo
+import com.ixidev.jtsalat.data.models.LocationInfo
 import java.util.Locale
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine

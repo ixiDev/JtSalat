@@ -1,15 +1,11 @@
 package com.ixidev.jtsalat.ui.screens.home
 
 import androidx.lifecycle.ViewModel
-import com.ixidev.jtsalat.data.LocationInfo
+import com.ixidev.jtsalat.data.AppSettings
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(appSettings: AppSettings) : ViewModel() {
 
-    val currentLocation: LocationInfo = LocationInfo(
-        latitude = 30.0,
-        longitude = 30.0,
-        city = "Casablanca, Morocco"
-    )
+    val currentLocation = appSettings.getUserLocation()
 
     init {
         println("HomeViewModel init")

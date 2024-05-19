@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.waterfall
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,16 +30,28 @@ import com.ixidev.jtsalat.ui.screens.compass.CompassScreen
 import com.ixidev.jtsalat.ui.screens.home.HomeScreen
 import com.ixidev.jtsalat.ui.theme.JtSalatTheme
 import com.ixidev.jtsalat.utils.BottomNavCurve
+import dev.icerock.moko.geo.compose.BindLocationTrackerEffect
+import dev.icerock.moko.geo.compose.LocationTrackerAccuracy
+import dev.icerock.moko.geo.compose.rememberLocationTrackerFactory
 import jtsalat.composeapp.generated.resources.Res
 import jtsalat.composeapp.generated.resources.app_background
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.koinInject
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 @Preview
 fun App() {
+    val facotry = rememberLocationTrackerFactory(LocationTrackerAccuracy.LowPower)
+    val locationTracker = remember { facotry.createLocationTracker() }
+    BindLocationTrackerEffect(locationTracker)
+
+    val viewModel = koinInject<AppViewModel>(
+        parameters = { parametersOf(locationTracker) }
+    )
     JtSalatTheme(darkTheme = false) {
         val navController = rememberNavController()
 
@@ -79,6 +93,10 @@ fun App() {
         }
 
     }
+
+    LaunchedEffect(locationTracker) {
+        viewModel.startTracking()
+    }
 }
 
 @Composable
@@ -88,7 +106,7 @@ fun AppHost(modifier: Modifier, navController: NavHostController) {
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = Destinations.COMPASS,
+        startDestination = Destinations.DEFAULT,
 //        enterTransition = {
 //            slideIntoContainer(towards = AnimatedContentTransitionScope.SlideDirection.Start, animationSpec =  tween(300))
 //        },

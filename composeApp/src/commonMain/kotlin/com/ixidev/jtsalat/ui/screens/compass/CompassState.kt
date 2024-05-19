@@ -1,6 +1,6 @@
 package com.ixidev.jtsalat.ui.screens.compass
 
-import com.ixidev.jtsalat.data.LocationInfo
+import com.ixidev.jtsalat.data.models.LocationInfo
 
 
 data class CompassState(

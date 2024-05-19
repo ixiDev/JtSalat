@@ -7,3 +7,9 @@ class AndroidPlatform : Platform {
 
 actual fun getPlatform(): Platform = AndroidPlatform()
 
+fun tets() {
+//    java.lang.Double.isNaN()
+    val dd = 0.00
+    dd.isNaN()
+}
+

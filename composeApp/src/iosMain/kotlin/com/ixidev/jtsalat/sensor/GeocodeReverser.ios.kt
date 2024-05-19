@@ -1,6 +1,6 @@
 package com.ixidev.jtsalat.sensor
 
-import com.ixidev.jtsalat.data.LocationInfo
+import com.ixidev.jtsalat.data.models.LocationInfo
 import platform.CoreLocation.CLGeocodeCompletionHandler
 import platform.CoreLocation.CLGeocoder
 import platform.CoreLocation.CLLocation
@@ -24,17 +24,16 @@ actual class GeocodeReverser {
                         println(error)
                         continuation.resume(
                             LocationInfo(
-                                longitude = lat,
-                                latitude = lng,
+                                latitude = lat,
+                                longitude = lng,
                                 city = "Unknown"
                             )
                         )
                     } else {
-                        println(placemark.locality)
                         continuation.resume(
                             LocationInfo(
-                                longitude = lat,
-                                latitude = lng,
+                                latitude = lat,
+                                longitude = lng,
                                 city = "${placemark.locality}, ${placemark.country}"
                             )
                         )
