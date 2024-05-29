@@ -1,4 +1,4 @@
-package com.ixidev.jtsalat
+package com.ixidev.jtsalat.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

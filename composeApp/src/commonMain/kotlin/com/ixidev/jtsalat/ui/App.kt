@@ -1,4 +1,4 @@
-package com.ixidev.jtsalat
+package com.ixidev.jtsalat.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,7 +23,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.ixidev.jtsalat.ui.Destinations
 import com.ixidev.jtsalat.ui.components.AppBottomBar
 import com.ixidev.jtsalat.ui.screens.calender.CalendarScreen
 import com.ixidev.jtsalat.ui.screens.compass.CompassScreen

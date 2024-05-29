@@ -38,7 +38,6 @@ class AppSettings {
     }
 
     fun updateUserLocation(location: LocationInfo) {
-        println("AppSettings.updateUserLocation $location")
         settings.putString(
             key = "user_location",
             value = Json.Default.encodeToString(

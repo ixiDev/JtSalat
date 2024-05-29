@@ -6,4 +6,5 @@
     <string name="maghrib_salat_name">Maghrib</string>
     <string name="isha_salat_name">Isha</string>
     <string name="approx_qibla_direction">Approximate Qibla direction in</string>
+    <string name="settings">Settings</string>
 </resources>

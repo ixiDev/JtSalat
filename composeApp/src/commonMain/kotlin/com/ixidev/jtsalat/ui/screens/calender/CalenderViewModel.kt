@@ -1,66 +1,23 @@
 package com.ixidev.jtsalat.ui.screens.calender
 
 import androidx.lifecycle.ViewModel
-import com.batoulapps.adhan2.Coordinates
-import com.batoulapps.adhan2.PrayerTimes
-import com.batoulapps.adhan2.data.DateComponents
 import com.ixidev.jtsalat.data.AppSettings
-import com.ixidev.jtsalat.data.models.LocationInfo
-import com.ixidev.jtsalat.data.models.SalatInfo
-import com.ixidev.jtsalat.data.models.SalatType
+import com.ixidev.jtsalat.data.PrayersRepository
 import kotlinx.coroutines.flow.map
-import kotlinx.datetime.Clock
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 
 class CalenderViewModel(
-    private val appSettings: AppSettings
+    appSettings: AppSettings,
+    private val prayersRepository: PrayersRepository
 ) : ViewModel() {
-
 
 
     val calenderStateFlow = appSettings.getUserLocation()
         .map { locationInfo ->
-            CalenderState(locationInfo, getPreysTimes(locationInfo))
+            CalenderState(
+                locationInfo = locationInfo,
+                prayTimes = prayersRepository.getPreysTimes(locationInfo)
+            )
         }
-
-    private fun getPreysTimes(locationInfo: LocationInfo): List<SalatInfo> {
-        val dateTime = Clock.System.now().toLocalDateTime(TimeZone.UTC).date
-        val dateComponents = DateComponents(
-            dateTime.year,
-            dateTime.monthNumber,
-            dateTime.dayOfMonth
-        )
-        val coordinates = Coordinates(locationInfo.latitude, locationInfo.longitude)
-        val preyTimes = PrayerTimes(coordinates, dateComponents, appSettings.calculationParameters)
-
-        return listOf(
-            SalatInfo(
-                salatype = SalatType.FAJR,
-                time = preyTimes.fajr
-            ),
-            SalatInfo(
-                salatype = SalatType.SUNRISE,
-                time = preyTimes.sunrise
-            ),
-            SalatInfo(
-                salatype = SalatType.DHUHR,
-                time = preyTimes.dhuhr
-            ),
-            SalatInfo(
-                salatype = SalatType.ASR,
-                time = preyTimes.asr
-            ),
-            SalatInfo(
-                salatype = SalatType.MAGHRIB,
-                time = preyTimes.maghrib
-            ),
-            SalatInfo(
-                salatype = SalatType.ISHA,
-                time = preyTimes.isha
-            ),
-        )
-    }
 
 
 }
